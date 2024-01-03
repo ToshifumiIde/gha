@@ -9,9 +9,9 @@ defaults:
   run:
     working-directory: backend
 
-
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
