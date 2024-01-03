@@ -1,24 +1,24 @@
-name: backend                  # ワークフローの名称を設定する
+name: backend
 
-on:                            # イベントの発火条件を決める
-  push:                        # pushによる発火
-    branches:                  # ブランチを連想配列で指定
-      - main                   # mainブランチを指定
+on:
+  push:
+    branches:
+      - main
 
-defaults:                      # ワークフローの全てのjobにデフォルト設定を追加可能
-  run:                         # runに
-    working-directory: backend # 対象のディレクトリを指定可能
+defaults:
+  run:
+    working-directory: backend
 
 
-jobs:                          # 実行するjobを定義する
-  build:                       # job_idの指定
-    runs-on: ubuntu-latest     # 実行するマシンの定義
-    steps:                     # 一連のタスクを連想配列で定義
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         - with:
           node-version: 16.x
-    
+
       - run: npm ci
       - run: npm run test
       - run: npm run build
