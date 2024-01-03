@@ -40,9 +40,10 @@ jobs:
           name: dist-index.js
           path: backend/dist/index.js
           retention-days: 3
+
   deploy:
     needs: build
-    if: github.event-name == 'push'
+    if: github.event_name == 'push'
     name: deploy for AWS
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +51,7 @@ jobs:
         with:
           name: dist
           path: backend/dist
-    
+  
       - uses: shimataro/ssh-key-actions@v2
         with:
           key: ${{ secrets.BACKEND_SERVER_SSH_KEY }}
