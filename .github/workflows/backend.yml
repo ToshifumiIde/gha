@@ -14,7 +14,7 @@ jobs:                          # 実行するjobを定義する
   build:                       # job_idの指定
     runs-on: ubuntu-latest     # 実行するマシンの定義
     steps:                     # 一連のタスクを連想配列で定義
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         - with:
           node-version: 16.x
