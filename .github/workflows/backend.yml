@@ -24,6 +24,7 @@ jobs:
       - run: npm run build
 
       - run: node dist/index.js &
+      - run: npx wait-on -t 10000 http://localhost:8080/api/health
       # - run: npx stepci run stepci/workflow.yml
       - run: npm run test:api
 
@@ -39,3 +40,25 @@ jobs:
           name: dist-index.js
           path: backend/dist/index.js
           retention-days: 3
+  deploy:
+    needs: build
+    if: github.event-name == 'push'
+    name: deploy for AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shimataro/ssh-key-actions@v2
+        with:
+          key: ${{ secrets.BACKEND_SERVER_SSH_KEY }}
+          known_hosts: ${{ secrets.BACKEND_SERVER_KNOWN_HOSTS }}
+      - run: rsync -v dist/index.js ${SERVER_USER}@${SERVER_IP}:~/index.js
+        env:
+          SERVER_USER: ${{ secrets.BACKEND_SERVER_USER }}
+          SERVER_IP: ${{ secrets.BACKEND_SERVER_IP }}
+      - run: ssh ${SERVER_USER}@${SERVER_IP} sudo systemctl restart backend
+        env:
+          SERVER_USER: ${{ secrets.BACKEND_SERVER_USER }}
+          SERVER_IP: ${{ secrets.BACKEND_SERVER_IP }}
+      - run: ssh ${SERVER_USER}@${SERVER_IP} ubuntu@3.27.9.255 systemctl status backend
+        env:
+          SERVER_USER: ${{ secrets.BACKEND_SERVER_USER }}
+          SERVER_IP: ${{ secrets.BACKEND_SERVER_IP }}
