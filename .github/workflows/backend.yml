@@ -1,2 +1,12 @@
-name : backend    #ワークフローの名称を設定する
+name: backend    # ワークフローの名称を設定する
 
+on:               # イベントの発火条件を決める
+  push:           # pushによる発火
+    branches:     # ブランチを連想配列で指定
+      - main      # mainブランチを指定
+
+jobs:           
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
