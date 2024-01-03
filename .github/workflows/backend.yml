@@ -23,6 +23,9 @@ jobs:
       - run: npm run test -- --coverage
       - run: npm run build
 
+      - run: node dist/index.js &
+      - run: npx stepci run stepci/workflow.yml
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
