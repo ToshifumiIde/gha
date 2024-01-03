@@ -24,7 +24,8 @@ jobs:
       - run: npm run build
 
       - run: node dist/index.js &
-      - run: npx stepci run stepci/workflow.yml
+      # - run: npx stepci run stepci/workflow.yml
+      - run: npm run test:api
 
       - uses: actions/upload-artifact@v3
         if: always()
